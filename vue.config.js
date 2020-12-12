@@ -23,10 +23,12 @@ module.exports = {
       errors: true
     }
   },
+  runtimeCompiler: true,
   configureWebpack: {
     name: name,
     resolve: {
       alias: {
+        vue: 'vue/dist/vue.esm-bundler.js',
         '@': resolve('src')
       }
     }

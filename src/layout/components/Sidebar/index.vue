@@ -24,13 +24,14 @@ import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.less'
 import { reactive, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
+import menus from '@/router/menus'
 
 export default {
   components: { SidebarItem, Logo },
   setup() {
     const route = useRoute()
-    const router = useRouter()
+    // const router = useRouter()
 
     const state = reactive({
       showLogo: true,
@@ -41,9 +42,9 @@ export default {
       sidebar: {
         opened: true
       },
-      routes: computed(() => {
-        return router.options.routes
-      }),
+      // routes: computed(() => {
+      //   return router.options.routes
+      // }),
       activeMenu: computed(() => {
         const { meta, path } = route
         // if set path, the sidebar will highlight the path you set
@@ -63,6 +64,7 @@ export default {
 
     return {
       ...state,
+      routes: menus,
       isCollapse
     }
   }

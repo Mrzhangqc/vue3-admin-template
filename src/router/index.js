@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { defineAsyncComponent } from 'vue'
+import menus from './menus'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -29,43 +30,31 @@ function asyncLoader(fn) {
 }
 
 const routes = [
-  // {
-  //   path: '/404',
-  //   component: () => import('@/views/404'),
-  //   hidden: true
-  // },
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
   {
     path: '/',
     redirect: '/home'
-  }, {
-    path: '/home',
-    name: 'home',
-    component: asyncLoader(() => import('@/views/Home')),
-    meta: { title: '首页', icon: 'el-icon-s-home' }
-  }, {
-    path: '/about',
-    redirect: '/about/about1',
-    //TODO: 待处理
-    component: asyncLoader(() => import('@/views/About1.vue')),
-    meta: { title: '联系' },
-    children: [{
-      path: 'about1',
-      name: 'about1',
-      component: asyncLoader(() => import('@/views/About1.vue')),
-      meta: { title: '联系1', icon: 'el-icon-s-home' }
-    }, {
-      path: 'about2',
-      name: 'about2',
-      component: asyncLoader(() => import('@/views/About2.vue')),
-      meta: { title: '联系2', icon: 'el-icon-s-home' }
-    }]
   }
 ]
 
-
-const handleRoute = () => {
-
+const addRoutes = (menus) => {
+  menus.forEach(item => {
+    if (item.children) {
+      addRoutes(item.children)
+    } else {
+      routes.push({
+        path: item.path,
+        component: asyncLoader(() => import(`@/views/${item.name}`)),
+        meta: item.meta
+      })
+    }
+  })
 }
+addRoutes(menus)
 
 const router = createRouter({
   history: createWebHashHistory(),
