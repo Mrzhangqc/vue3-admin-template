@@ -5,7 +5,8 @@ const menus = [
     meta: { title: '首页', icon: 'el-icon-s-home' }
   }, {
     path: '/about',
-    meta: { title: '联系' },
+    meta: { title: '联系', icon: 'el-icon-s-home' },
+    alwaysShow: true,
     children: [{
       path: '/about/about1',
       name: 'About1',

@@ -5,12 +5,13 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
+          <span class="user-name">{{userName}}</span>
           <i class="el-icon-caret-bottom" />
         </div>
-        <template v-slot:dropdown>
+        <template #dropdown>
           <el-dropdown-menu  class="user-dropdown">
             <!-- <router-link to="/">
               <el-dropdown-item>
@@ -31,35 +32,40 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
+import { useStore } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-const Avatar = require('@/assets/logo.png')
+import { useRoute, useRouter } from 'vue-router'
+import { computed } from 'vue'
+const AvatarImg = require('@/assets/logo.png')
 
 export default {
-  data: function () {
-    return {
-      avatar: Avatar,
-      sidebar: {}
-    }
-  },
   components: {
     Breadcrumb,
     Hamburger
   },
-  computed: {
-    // ...mapGetters([
-    //   'sidebar',
-    //   'avatar'
-    // ])
-  },
-  methods: {
-    toggleSideBar () {
-      this.$store.dispatch('app/toggleSideBar')
-    },
-    async logout () {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    
+    const sidebar = computed(_ => store.getters.sidebar)
+
+    const userName = computed(_ => store.getters.user.name)
+
+    const toggleSideBar = _ => store.dispatch('app/toggleSideBar')
+
+    const logout = async _ => {
+      await store.dispatch('user/logout')
+      router.push(`/login?redirect=${route.fullPath}`)
+    }
+
+    return {
+      avatar: AvatarImg,
+      userName,
+      sidebar,
+      toggleSideBar,
+      logout
     }
   }
 }
@@ -99,30 +105,20 @@ export default {
       outline: none;
     }
 
-    .right-menu-item {
-      display: inline-block;
-      padding: 0 8px;
-      height: 100%;
-      font-size: 18px;
-      color: #5a5e66;
-      vertical-align: text-bottom;
-
-      &.hover-effect {
-        cursor: pointer;
-        transition: background .3s;
-
-        &:hover {
-          background: rgba(0, 0, 0, .025)
-        }
-      }
-    }
-
     .avatar-container {
       margin-right: 30px;
 
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+
+        .user-name {
+          float: right;
+          height: 40px;
+          line-height: 40px;
+          font-size: 14px;
+          padding-left: 5px;
+        }
 
         .user-avatar {
           cursor: pointer;
@@ -141,5 +137,29 @@ export default {
       }
     }
   }
+}
+</style>
+<style lang="less">
+.right-menu {
+  .right-menu-item {
+    display: inline-block;
+    padding: 0 8px;
+    height: 100%;
+    font-size: 18px;
+    color: #5a5e66;
+    vertical-align: text-bottom;
+
+    &.hover-effect {
+      cursor: pointer;
+      transition: background .3s;
+
+      &:hover {
+        background: rgba(0, 0, 0, .025)
+      }
+    }
+  }
+}
+.avatar-container {
+  margin-right: 30px;
 }
 </style>

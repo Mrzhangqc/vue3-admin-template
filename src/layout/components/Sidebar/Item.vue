@@ -1,37 +1,27 @@
 <script>
-import { h, reactive } from 'vue'
-export default {
-  name: 'MenuItem',
-  functional: true,
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    }
-  },
-  setup(props, { slots, attrs, emit }) {
-    const { props: { icon, title } } = reactive({ props })
-    const vnodes = []
+import { h } from 'vue'
 
-    if (icon) {
-      if (icon.includes('el-icon')) {
-        vnodes.push(<i class={[icon, 'sub-el-icon']} />)
-      } else {
-        vnodes.push(<svg-icon icon-class={icon}/>)
-      }
-    }
+const MenuItem = (props, context) => {
+  const { icon, title } = props
+  const vnodes = []
 
-    if (title) {
-      vnodes.push(<span slot='title'>{(title)}</span>)
+  if (icon) {
+    if (icon.includes('el-icon')) {
+      vnodes.push(<i class={[icon, 'sub-el-icon']} />)
+    } else {
+      vnodes.push(<svg-icon icon-class={icon}/>)
     }
-    // 返回render函数
-    return () => h('div', vnodes)
   }
+
+  if (title) {
+    vnodes.push(<span slot='title'>{(title)}</span>)
+  }
+  return h('div', {}, vnodes)
 }
+
+MenuItem.props = ['icon', 'title']
+
+export default MenuItem
 </script>
 
 <style scoped>

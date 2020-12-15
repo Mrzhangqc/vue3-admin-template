@@ -12,7 +12,6 @@ import menus from './menus'
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
     breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
@@ -41,15 +40,22 @@ const routes = [
   }
 ]
 
+// 路由根据菜单扁平数组
+let parent = null;
 const addRoutes = (menus) => {
   menus.forEach(item => {
     if (item.children) {
+      parent = { path: item.children[0].path, meta: item.meta }
       addRoutes(item.children)
     } else {
       routes.push({
         path: item.path,
         component: asyncLoader(() => import(`@/views/${item.name}`)),
-        meta: item.meta
+        props: (route) => ({ query: route.query }),
+        meta: {
+          parentRoute: parent,
+          ...item.meta
+        }
       })
     }
   })

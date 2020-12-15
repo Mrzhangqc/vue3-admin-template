@@ -15,9 +15,10 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'space-before-function-paren': 'off',
     'semi': 'off',
-    'template-curly-spacing' : 'off',
+    'template-curly-spacing': 'off',
     'indent': ['error', 2, {
       'ignoredNodes': ['TemplateLiteral']
-    }]
+    }],
+    'no-trailing-spaces': 'off'
   }
 }

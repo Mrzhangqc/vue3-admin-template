@@ -11,8 +11,9 @@
 </template>
 
 <script>
-import { computed, reactive } from 'vue'
+import { computed, reactive, toRefs } from 'vue'
 import { Navbar, Sidebar, AppMain } from './components'
+import { useStore } from 'vuex'
 
 export default {
   name: 'Layout',
@@ -22,20 +23,21 @@ export default {
     AppMain
   },
   setup() {
+    const store = useStore()
+
     const state = reactive({
       classObj: computed(() => {
+        const { getters: { sidebar } } = store
         return {
-          hideSidebar: false,
-          withoutAnimation: false
-          // hideSidebar: !this.sidebar.opened,
-          // withoutAnimation: this.sidebar.withoutAnimation,
+          hideSidebar: !sidebar.opened,
+          withoutAnimation: sidebar.withoutAnimation
         }
       })
     })
 
     return {
-      fixedHeader: true,
-      ...state
+      ...toRefs(state),
+      fixedHeader: true
     }
   }
 }

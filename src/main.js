@@ -3,14 +3,58 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import ElementPlus from 'element-plus'
-import 'element-plus/lib/theme-chalk/index.css'
 import '@/styles/index.less'
+import {
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElDivider,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElPopover,
+  ElPopper,
+  ElScrollbar,
+  ElSubmenu,
+  ElTooltip,
+  ElLoading,
+  ElMessage
+} from 'element-plus';
+const components = [
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElDivider,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElPopover,
+  ElPopper,
+  ElScrollbar,
+  ElSubmenu,
+  ElTooltip,
+  ElLoading,
+  ElMessage
+]
+const plugins = [
+  ElLoading,
+  ElMessage
+]
 
 const app = createApp(App)
 
-app.use(ElementPlus)
-  .use(store)
+components.forEach(component => {
+  app.component(component.name, component)
+})
+plugins.forEach(plugin => {
+  app.use(plugin)
+})
+
+app.use(store)
   .use(router)
   .mount('#app')
 

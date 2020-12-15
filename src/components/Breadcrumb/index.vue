@@ -1,7 +1,7 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
+      <el-breadcrumb-item v-for="(item,index) in levelList" :key="`${index}-${item.path}`">
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
@@ -10,43 +10,52 @@
 </template>
 
 <script>
-// import pathToRegexp from 'path-to-regexp'
-
+import { reactive, toRefs, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 export default {
-  data () {
-    return {
+  name: 'Breadcrumb',
+  setup() {
+    const state = reactive({
       levelList: null
-    }
-  },
-  watch: {
-    $route () {
-      this.getBreadcrumb()
-    }
-  },
-  created () {
-    this.getBreadcrumb()
-  },
-  methods: {
-    getBreadcrumb () {
-      // only show routes with meta.title
-      const matched = this.$route.matched.filter(item => item.meta && item.meta.title)
+    })
+    const route = useRoute()
+    const router = useRouter()
 
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
-    },
-    pathCompile (path) {
-      // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
-      // const { params } = this.$route
-      return path
-      // var toPath = pathToRegexp.compile(path)
-      // return toPath(params)
-    },
-    handleLink (item) {
+    const getBreadcrumb = () => {
+      // only show routes with meta.title
+      // only support two layers of nested
+      const matched = route.matched.filter(item => item.meta && item.meta.title)
+      const routeList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      const firstRoute = matched && matched.length > 0 ? matched[0] : null;
+      const parentRoute = firstRoute && firstRoute.meta.parentRoute ? firstRoute.meta.parentRoute : null
+
+      state.levelList = parentRoute ? [parentRoute].concat(routeList) : routeList
+    }
+
+    // 监听单个属性
+    watch(() => route.path, (newVal, oldVal) => {
+      if (newVal) {
+        getBreadcrumb()
+      }
+    })
+
+    const pathCompile = (path) => {
+      const { query } = route
+      return { path, query }
+    }
+
+    const handleLink = (item) => {
       const { redirect, path } = item
       if (redirect) {
-        this.$router.push(redirect)
+        router.push(redirect)
         return
       }
-      this.$router.push(this.pathCompile(path))
+      router.push(pathCompile(path))
+    }
+
+    return {
+      ...toRefs(state),
+      handleLink
     }
   }
 }

@@ -19,11 +19,11 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.less'
-import { reactive, computed } from 'vue'
+import { reactive, computed, toRefs } from 'vue'
+import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import menus from '@/router/menus'
 
@@ -31,20 +31,16 @@ export default {
   components: { SidebarItem, Logo },
   setup() {
     const route = useRoute()
-    // const router = useRouter()
+    const store = useStore()
 
     const state = reactive({
       showLogo: true,
-      isCollapse: false,
-      // ...mapGetters([
-      //   'sidebar'
-      // ]),
-      sidebar: {
-        opened: true
-      },
-      // routes: computed(() => {
-      //   return router.options.routes
-      // }),
+      isCollapse: computed(() => {
+        return !state.sidebar.opened
+      }),
+      sidebar: computed(_ => {
+        return store.getters.sidebar
+      }),
       activeMenu: computed(() => {
         const { meta, path } = route
         // if set path, the sidebar will highlight the path you set
@@ -58,14 +54,9 @@ export default {
       })
     })
 
-    const isCollapse = computed(() => {
-      return !state.sidebar.opened
-    })
-
     return {
-      ...state,
-      routes: menus,
-      isCollapse
+      ...toRefs(state),
+      routes: menus
     }
   }
 }

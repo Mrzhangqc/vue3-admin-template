@@ -5,19 +5,20 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = 'vue Admin Template' // page title
-const port = process.env.port || 9528 // dev port
+const pageTitle = 'vue3 Admin Template'
+const port = process.env.port || 8989
+const isDev = process.env.NODE_ENV === 'development'
 
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
+// 配置项参考：https://cli.vuejs.org/config/
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: isDev,
   productionSourceMap: false,
   devServer: {
     port: port,
-    // open: true,
+    open: true,
     overlay: {
       warnings: false,
       errors: true
@@ -25,7 +26,6 @@ module.exports = {
   },
   runtimeCompiler: true,
   configureWebpack: {
-    name: name,
     resolve: {
       alias: {
         vue: 'vue/dist/vue.esm-bundler.js',
@@ -34,17 +34,25 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    // it can improve the speed of the first screen, it is recommended to turn on preload
+    // 提高首屏加载速度, 开启预加载
     config.plugin('preload').tap(() => [
       {
         rel: 'preload',
         // to ignore runtime.js
-        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
         include: 'initial'
       }
     ])
-    // when there are many pages, it will cause too many meaningless requests
+
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = pageTitle
+        // 传递给 html-webpack-plugin's 构造函数的新参数
+        return args
+      })
+
+    // 移除 prefetch 插件
     config.plugins.delete('prefetch')
   }
 }
