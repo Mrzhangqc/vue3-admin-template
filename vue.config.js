@@ -46,18 +46,19 @@ module.exports = {
         return args
       })
 
-    if (isProd) {
-      // 入口起点的最大体积(800kb)
-      // 生成文件的最大体积(3Mb)
-      // 只给 js 文件的性能提示
-      config.performance
-        .hints('warning')
-        .maxEntrypointSize(819200)
-        .maxAssetSize(3145728)
-        .assetFilter((assetFilename) => {
-          return assetFilename.endsWith('.js');
-        })
-    }
+     config
+      .when(isProd, config => {
+        // 入口起点的最大体积(800kb)
+        // 生成文件的最大体积(3Mb)
+        // 只给 js 文件的性能提示
+        config.performance
+          .hints('warning')
+          .maxEntrypointSize(819200)
+          .maxAssetSize(3145728)
+          .assetFilter((assetFilename) => {
+            return assetFilename.endsWith('.js');
+          })
+     })
 
     // 移除 prefetch 插件
     config.plugins.delete('prefetch')
