@@ -54,12 +54,12 @@ plugins.forEach(plugin => {
   app.use(plugin)
 })
 
-app.use(store)
-  .use(router)
-  .mount('#app')
-
-app.config.errorHandler = (err, vm, info) => {
+app.config.errorHandler = (err) => {
   if (err) {
     console.error(`${err}`)
   }
 }
+
+app.use(store)
+  .use(router)
+  .mount('#app')

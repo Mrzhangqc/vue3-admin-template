@@ -6,6 +6,7 @@
 
 <script>
 import { isExternal } from '@/utils/validate'
+import { computed, toRefs } from 'vue'
 
 export default {
   props: {
@@ -14,29 +15,25 @@ export default {
       required: true
     }
   },
-  computed: {
-    isExternal () {
-      return isExternal(this.to)
-    },
-    type () {
-      if (this.isExternal) {
-        return 'a'
-      }
-      return 'router-link'
-    }
-  },
-  methods: {
-    linkProps (to) {
-      if (this.isExternal) {
+  setup(props) {
+    const { to } = toRefs(props)
+    const isExtra = computed(() => isExternal(to))
+
+    const linkProps = to => {
+      if (isExtra.value) {
         return {
           href: to,
           target: '_blank',
           rel: 'noopener'
         }
       }
-      return {
-        to: to
-      }
+      return { to }
+    }
+
+    return {
+      isExternal: isExtra.value,
+      type: isExtra.value ? 'a' : 'router-link',
+      linkProps
     }
   }
 }

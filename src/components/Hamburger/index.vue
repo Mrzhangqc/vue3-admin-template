@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
 export default {
   name: 'Hamburger',
   props: {
@@ -23,11 +22,9 @@ export default {
       default: false
     }
   },
-  setup() {
-    const instance = getCurrentInstance()
-
+  setup(props, { attrs, slots, emit }) {
     return {
-      toggleClick: _ => instance.emit('toggleClick')
+      toggleClick: _ => emit('toggleClick')
     }
   }
 }

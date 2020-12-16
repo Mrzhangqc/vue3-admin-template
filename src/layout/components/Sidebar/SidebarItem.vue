@@ -28,10 +28,11 @@
 </template>
 
 <script>
-import path from 'path'
+import _path from 'path'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
+import { reactive, toRef } from 'vue'
 
 export default {
   name: 'SidebarItem',
@@ -50,17 +51,17 @@ export default {
       default: ''
     }
   },
-  data () {
-    this.onlyOneChild = null
-    return {}
-  },
-  methods: {
-    hasOneShowingChild (children = [], parent) {
+  setup(props, { attrs, slots, emit }) {
+    const state = reactive({
+      onlyOneChild: null
+    })
+
+    const hasOneShowingChild = (children = [], parent) => {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
         } else {
-          this.onlyOneChild = item
+          state.onlyOneChild = item
           return true
         }
       })
@@ -70,20 +71,27 @@ export default {
       }
 
       if (showingChildren.length === 0) {
-        this.onlyOneChild = { ...parent, path: '', noShowingChildren: true }
+        state.onlyOneChild = { ...parent, path: '', noShowingChildren: true }
         return true
       }
 
       return false
-    },
-    resolvePath (routePath) {
+    }
+
+    const resolvePath = (routePath) => {
       if (isExternal(routePath)) {
         return routePath
       }
-      if (isExternal(this.basePath)) {
-        return this.basePath
+      if (isExternal(props.basePath)) {
+        return props.basePath
       }
-      return path.resolve(this.basePath, routePath)
+      return _path.resolve(props.basePath, routePath)
+    }
+
+    return {
+      onlyOneChild: toRef(state, 'onlyOneChild'),
+      hasOneShowingChild,
+      resolvePath
     }
   }
 }
