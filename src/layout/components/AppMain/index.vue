@@ -3,7 +3,7 @@
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <router-view v-slot="{ Component }">
         <transition name="fade-transform" mode="out-in">
-          <component :is="Component" />
+          <component :is="Component" class="router-view" />
         </transition>
       </router-view>
     </el-scrollbar>
@@ -36,5 +36,8 @@ export default {
 }
 .app-main .scrollbar-wrapper{
   padding: 20px;
+  .router-view{
+    min-width: 660px;
+  }
 }
 </style>

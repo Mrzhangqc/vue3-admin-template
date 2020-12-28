@@ -1,5 +1,5 @@
 <template>
- <layout />
+  <layout />
 </template>
 <script>
 import Layout from '@/layout'

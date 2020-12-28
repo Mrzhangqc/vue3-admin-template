@@ -30,7 +30,7 @@ function asyncLoader(fn) {
 const routes = [
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: asyncLoader(() => import('@/views/404')),
     hidden: true
   },
   {
