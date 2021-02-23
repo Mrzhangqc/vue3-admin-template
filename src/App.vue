@@ -2,7 +2,7 @@
   <layout />
 </template>
 <script>
-import Layout from '@/layout'
+import Layout from '@/layout/index.vue'
 export default {
   name: 'App',
   components: {

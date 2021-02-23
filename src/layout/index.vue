@@ -12,7 +12,7 @@
 
 <script>
 import { computed, reactive, toRefs } from 'vue'
-import { Navbar, Sidebar, AppMain } from './components'
+import { Navbar, Sidebar, AppMain } from './components/index.js'
 import { useStore } from 'vuex'
 
 export default {
@@ -44,8 +44,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @import "~@/styles/mixin.less";
-  @import "~@/styles/variables.less";
+  @import "@/styles/mixin.less";
+  @import "@/styles/variables.less";
 
   .app-wrapper {
     .mixin-clearfix();

@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { defineAsyncComponent } from 'vue'
 import menus from './menus'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  *
@@ -18,19 +19,19 @@ import menus from './menus'
   }
  */
 
-function asyncLoader(fn) {
-  return defineAsyncComponent({
-    loader: fn,
-    loadingComponent: {
-      template: '<div>Loading...</div>'
-    }
-  })
-}
+// function asyncLoader(fn) {
+//   return defineAsyncComponent({
+//     loader: fn,
+//     loadingComponent: {
+//       template: '<div>Loading...</div>'
+//     }
+//   })
+// }
 
 const routes = [
   {
     path: '/404',
-    component: asyncLoader(() => import('@/views/404')),
+    component: () => import('../views/404/index.vue'),
     hidden: true
   },
   {
@@ -49,7 +50,8 @@ const addRoutes = (menus) => {
     } else {
       routes.push({
         path: item.path,
-        component: asyncLoader(() => import(`@/views/${item.name}`)),
+        // vite dynamic-import: Imports must end with a file extension
+        component: () => import(`../views/${item.name}.vue`),
         props: (route) => ({ query: route.query }),
         meta: {
           parentRoute: parent,

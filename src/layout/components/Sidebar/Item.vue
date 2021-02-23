@@ -1,27 +1,55 @@
+
+<template>
+  <div>
+    <template v-if="icon">
+      <i v-if="icon.includes('el-icon')" :class="[icon, 'sub-el-icon']" />
+      <span v-else>Icon</span>
+    </template>
+    <span v-if="title">{{title}}</span>
+  </div>
+</template>
+
 <script>
-import { h } from 'vue'
+import { onMounted, reactive, toRefs } from 'vue';
+export default {
+  name: 'MenuItem',
+  props:['icon', 'title'],
+  setup(props) {
+    const state = reactive({
+      ...props
+    })
 
-const MenuItem = (props, context) => {
-  const { icon, title } = props
-  const vnodes = []
-
-  if (icon) {
-    if (icon.includes('el-icon')) {
-      vnodes.push(<i class={[icon, 'sub-el-icon']} />)
-    } else {
-      vnodes.push(<svg-icon icon-class={icon}/>)
+    return {
+      ...toRefs(state)
     }
   }
-
-  if (title) {
-    vnodes.push(<span slot='title'>{(title)}</span>)
-  }
-  return h('div', {}, vnodes)
 }
 
-MenuItem.props = ['icon', 'title']
+// jsx 函数式组件实现方式
 
-export default MenuItem
+// import { h } from 'vue'
+
+// const MenuItem = (props, context) => {
+//   const { icon, title } = props
+//   const vnodes = []
+
+//   if (icon) {
+//     if (icon.includes('el-icon')) {
+//       vnodes.push(<i class={[icon, 'sub-el-icon']} />)
+//     } else {
+//       vnodes.push(<svg-icon icon-class={icon}/>)
+//     }
+//   }
+
+//   if (title) {
+//     vnodes.push(<span slot='title'>{(title)}</span>)
+//   }
+//   return h('div', {}, vnodes)
+// }
+
+// MenuItem.props = ['icon', 'title']
+// export default MenuItem
+
 </script>
 
 <style scoped>

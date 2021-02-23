@@ -28,10 +28,9 @@
 </template>
 
 <script>
-import _path from 'path'
-import { isExternal } from '@/utils/validate'
-import Item from './Item'
-import AppLink from './Link'
+import { isExternal } from '@/utils/validate.js'
+import Item from './Item.vue'
+import AppLink from './Link.vue'
 import { reactive, toRef } from 'vue'
 
 export default {
@@ -79,13 +78,17 @@ export default {
     }
 
     const resolvePath = (routePath) => {
+      const basePath = props.basePath
       if (isExternal(routePath)) {
         return routePath
       }
-      if (isExternal(props.basePath)) {
-        return props.basePath
+      if (isExternal(basePath)) {
+        return basePath
       }
-      return _path.resolve(props.basePath, routePath)
+      if(routePath.includes(basePath)) {
+        return routePath
+      }
+      return props.basePath + routePath
     }
 
     return {

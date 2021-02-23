@@ -33,11 +33,11 @@
 
 <script>
 import { useStore } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
-const AvatarImg = require('@/assets/logo.png')
+import AvatarImg from '@/assets/logo.svg'
 
 export default {
   components: {

@@ -19,13 +19,13 @@
 </template>
 
 <script>
-import Logo from './Logo'
-import SidebarItem from './SidebarItem'
+import Logo from './Logo.vue'
+import SidebarItem from './SidebarItem.vue'
 import variables from '@/styles/variables.less'
 import { reactive, computed, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import menus from '@/router/menus'
+import menus from '@/router/menus.js'
 
 export default {
   components: { SidebarItem, Logo },
