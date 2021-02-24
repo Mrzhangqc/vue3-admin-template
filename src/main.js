@@ -4,55 +4,12 @@ import router from './router/index.js'
 import store from './store/index.js'
 
 import '@/styles/index.less'
-import {
-  ElBreadcrumb,
-  ElBreadcrumbItem,
-  ElDivider,
-  ElDropdown,
-  ElDropdownItem,
-  ElDropdownMenu,
-  ElMenu,
-  ElMenuItem,
-  ElMenuItemGroup,
-  ElPopover,
-  ElPopper,
-  ElScrollbar,
-  ElSubmenu,
-  ElTooltip,
-  ElLoading,
-  ElMessage
-} from 'element-plus';
-const components = [
-  ElBreadcrumb,
-  ElBreadcrumbItem,
-  ElDivider,
-  ElDropdown,
-  ElDropdownItem,
-  ElDropdownMenu,
-  ElMenu,
-  ElMenuItem,
-  ElMenuItemGroup,
-  ElPopover,
-  ElPopper,
-  ElScrollbar,
-  ElSubmenu,
-  ElTooltip,
-  ElLoading,
-  ElMessage
-]
-const plugins = [
-  ElLoading,
-  ElMessage
-]
+
+// 采用全局引用，在vite构建中不需要再配置按需引入
+import ElementPlus from 'element-plus';
+import 'element-plus/lib/theme-chalk/index.css';
 
 const app = createApp(App)
-
-components.forEach(component => {
-  app.component(component.name, component)
-})
-plugins.forEach(plugin => {
-  app.use(plugin)
-})
 
 app.config.errorHandler = (err) => {
   if (err) {
@@ -60,6 +17,7 @@ app.config.errorHandler = (err) => {
   }
 }
 
-app.use(store)
+app.use(ElementPlus)
+  .use(store)
   .use(router)
   .mount('#app')

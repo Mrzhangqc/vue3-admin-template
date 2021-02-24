@@ -2,8 +2,10 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="`${index}-${item.path}`">
-        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <span v-if="item.redirect === 'noRedirect' || index === levelList.length-1" class="no-redirect">
+          {{ item.meta.title??'' }}
+        </span>
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title??'' }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -24,12 +26,13 @@ export default {
     const getBreadcrumb = () => {
       // only show routes with meta.title
       // only support two layers of nested
-      const matched = route.matched.filter(item => item.meta && item.meta.title)
-      const routeList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
-      const firstRoute = matched && matched.length > 0 ? matched[0] : null;
-      const parentRoute = firstRoute && firstRoute.meta.parentRoute ? firstRoute.meta.parentRoute : null
+      const matched = route.matched.filter(item => item?.meta.title)
+      const routeList = matched.filter(item => item?.meta.title && item.meta.breadcrumb !== false)
 
-      state.levelList = parentRoute ? [parentRoute].concat(routeList) : routeList
+      const currentRoute = matched && matched.length > 0 ? matched[0] : null;
+      const parentRoute = currentRoute?.meta?.parentRoute
+
+      state.levelList = parentRoute ? [parentRoute, ...routeList] : routeList
     }
 
     // 监听单个属性

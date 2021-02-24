@@ -85,7 +85,7 @@ export default {
       if (isExternal(basePath)) {
         return basePath
       }
-      if(routePath.includes(basePath)) {
+      if (routePath.includes(basePath)) {
         return routePath
       }
       return props.basePath + routePath

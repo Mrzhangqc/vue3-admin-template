@@ -12,7 +12,10 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in routes" 
+          :key="route.path" :item="route" 
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -21,11 +24,22 @@
 <script>
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
-import variables from '@/styles/variables.less'
 import { reactive, computed, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import menus from '@/router/menus.js'
+
+// import variables from '@/styles/variables.less'
+const variables = {
+  menuText: '#bfcbd9',
+  menuActiveText: '#409EFF',
+  subMenuActiveText: '#f4f4f5',
+  menuBg: '#304156',
+  menuHover: '#263445',
+  subMenuBg: '#1f2d3d',
+  subMenuHover: '#001528',
+  sideBarWidth: '210px'
+}
 
 export default {
   components: { SidebarItem, Logo },
@@ -49,9 +63,7 @@ export default {
         }
         return path
       }),
-      variables: computed(() => {
-        return variables
-      })
+      variables
     })
 
     return {

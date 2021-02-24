@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { defineAsyncComponent } from 'vue'
 import menus from './menus'
 
 /**
@@ -19,15 +18,6 @@ import menus from './menus'
   }
  */
 
-// function asyncLoader(fn) {
-//   return defineAsyncComponent({
-//     loader: fn,
-//     loadingComponent: {
-//       template: '<div>Loading...</div>'
-//     }
-//   })
-// }
-
 const routes = [
   {
     path: '/404',
@@ -40,13 +30,12 @@ const routes = [
   }
 ]
 
-// 添加路由(根据菜单扁平数组)
-let parent = null;
-const addRoutes = (menus) => {
+// 添加路由配置(根据菜单扁平化数组)
+const addRoutes = (menus, parentRoute) => {
   menus.forEach(item => {
     if (item.children) {
-      parent = { path: item.children[0].path, meta: item.meta }
-      addRoutes(item.children)
+      const parent = { ...item, children: null }
+      addRoutes(item.children, parent)
     } else {
       routes.push({
         path: item.path,
@@ -54,7 +43,7 @@ const addRoutes = (menus) => {
         component: () => import(`../views/${item.name}.vue`),
         props: (route) => ({ query: route.query }),
         meta: {
-          parentRoute: parent,
+          parentRoute: parentRoute || null,
           ...item.meta
         }
       })

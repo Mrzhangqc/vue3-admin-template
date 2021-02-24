@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { onMounted, reactive, toRefs } from 'vue';
+import { reactive, toRefs } from 'vue';
 export default {
   name: 'MenuItem',
-  props:['icon', 'title'],
+  props: ['icon', 'title'],
   setup(props) {
     const state = reactive({
       ...props

@@ -1,20 +1,22 @@
 module.exports = {
-  root: true,
-  env: {
-    node: true
+  extends: [
+    // vue官方eslint规则：eslint-plugin-vue
+    'plugin:vue/vue3-essential',
+    // 基于standard的eslint规则
+    'standard'
+  ],
+  parser: "vue-eslint-parser",
+  parserOptions: {
+    "parser": "babel-eslint",
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
   },
-  // extends: [
-  //   'plugin:vue/vue3-essential',
-  //   '@vue/standard'
-  // ],
-  // parserOptions: {
-  //   parser: 'babel-eslint'
-  // },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'space-before-function-paren': 'off',
     'semi': 'off',
+    'comma': 'off',
     'template-curly-spacing': 'off',
     'indent': ['error', 2, {
       'ignoredNodes': ['TemplateLiteral']
