@@ -20,6 +20,19 @@ module.exports = defineConfig({
     }
   },
   base: './',
+  build: {
+    rollupOptions: {
+      output: {
+        // 第三方库分割
+        manualChunks: {
+          vueLib: ['lodash', 'axios', 'vue-router', 'vue', 'vuex'],
+          lib: ['element-plus'],
+        }
+      }
+    },
+    // chunk size kbs
+    chunkSizeWarningLimit: 800
+  },
   // server: {
   //   port:8080,
   //   open: true,
