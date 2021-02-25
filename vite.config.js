@@ -9,7 +9,8 @@ module.exports = defineConfig({
   plugins: [
     vue(),
     eslint({
-      include: '**/*.+(vue|js|jsx|ts|tsx)'
+      include: '**/*.+(vue|js|jsx|ts|tsx)',
+      useEslintrc: true
     }),
   ],
   resolve: {

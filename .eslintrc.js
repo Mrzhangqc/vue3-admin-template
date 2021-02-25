@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   extends: [
     // vue官方eslint规则：eslint-plugin-vue
     'plugin:vue/vue3-essential',
@@ -21,6 +22,8 @@ module.exports = {
     'indent': ['error', 2, {
       'ignoredNodes': ['TemplateLiteral']
     }],
-    'no-trailing-spaces': 'off'
+    'no-trailing-spaces': 'off',
+    'no-multiple-empty-lines': 'off',
+    'eol-last': 'off'
   }
 }
